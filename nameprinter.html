@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>영어 & 한글 이름 생성기</title>
+    <style>
+        body {
+            background-color: rgb(196, 196, 196);
+        }
+
+        button {
+            background-color: rgb(70, 105, 136);
+            padding: 10px 20px; /* 버튼 내부 패딩 설정 (위아래 10px, 좌우 20px) */
+            border-radius: 10px; /* 버튼 라운딩 설정 */
+            color: rgb(255, 255, 255);
+            outline: auto;
+            outline-color: rgb(0, 26, 173);
+            outline-style: groove;
+            font-weight: bolder;
+            font-size: 20px; /* 버튼 텍스트 크기 설정 */
+        }
+
+        .output-text {
+            font-size: 20px; /* 텍스트 크기를 원하는 크기로 조정 */
+            margin-top: 10px; /* 텍스트 위쪽 여백 조정 */
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>한글 이름</h1>
+    <button id="oneCharButton">한 글자 이름 출력</button>
+    <div id="outputOneChar" class="output-text"></div>
+
+    <br>
+
+    <button id="twoCharButton">두 글자 이름 출력</button>
+    <div id="outputTwoChar" class="output-text"></div>
+
+    <br>
+
+    <button id="threeCharButton">세 글자 이름 출력</button>
+    <div id="outputThreeChar" class="output-text"></div>
+
+    <br>
+    <br>
+
+    <h1>영어 이름</h1>
+
+    <button id="englishNameButton">영어 이름 출력</button>
+    <div id="outputEngChar" class="output-text"></div>
+</body>
+
+<script>
+    // 한 글자 이름 리스트
+    var OneCharList = ["율", "준", "윤", "건", "봄", "현", "솔", "별", "산", "찬", "설", "민", "진", "원", "결", "강", "환", "은", "린", "훈", "겸", "혁", "단", "한", "선", "슬", "빈", "호", "담", "수", "유", "범", "연", "희", "신", "휘", "온", "정", "훤", "안", "도", "권", "비", "솜", "영", "완", "인", "운", "후", "헌", "랑", "주", "든", "엘", "성", "우", "레", "경", "늘", "률", "리", "란", "승", "송", "샘", "웅", "하", "룩", "을", "용", "본", "림", "들", "빛", "탄", "명", "욱", "석", "이", "해", "금", "상", "람", "홍", "아", "나", "미", "서", "륜", "철", "룬", "국", "름", "규", "루", "곤", "언", "지", "청", "효"];
+
+    // 두 글자 이름 리스트
+    var TwoCharList = ["지우", "민준", "서윤", "서준", "서연", "민서", "도윤", "하윤", "시우", "서현", "주원", "예준", "연우", "지민", "지호", "하은", "지원", "서진", "지후", "하준", "윤서", "지유", "준우", "채원", "준서", "지윤", "수아", "도현", "건우", "선우", "현우", "은서", "지아", "수현", "지훈", "우진", "다은", "은우", "시윤", "수빈", "예은", "하율", "소율", "서우", "현서", "시현", "유진", "예린", "하린", "예원", "민재", "지율", "유준", "소윤", "서아", "수민", "현준", "시은", "유나", "승현", "정우", "채은", "서율", "윤아", "가은", "서영", "민지", "승우", "예진", "준혁", "지환", "아인", "예나", "수연", "유빈", "승민", "윤우", "시아", "예서", "아린", "유찬", "이준", "주아", "시연", "민성", "시온", "연서", "다인", "시후", "이안", "준영", "다온", "유주", "진우", "수호", "다연", "아윤", "하진", "채윤"];
+    
+    // 세 글자 이름 리스트
+    var ThreeCharList = ["다니엘", "에스더", "사무엘", "아이린", "소피아", "에이든", "제이든", "클로이", "아리아", "앤드류", "레이나", "조슈아", "알렉스", "라이언", "벤자민", "마리아", "제임스", "엘리야", "저스틴", "데이빗", "제이미", "윌리엄", "제시카", "루디아", "제이슨", "루카스", "루시아", "아리엘", "이로운", "에이미", "제이콥", "율리아", "아이리", "엘리사", "명미정", "미리내", "유니스", "한누리", "하나린", "조나단", "스텔라", "엘레나", "마이클", "리디아", "요안나", "빛나라", "드보라", "에스라", "레이첼", "토마스", "유리나", "엘리나", "차오름", "브랜든", "빛가람", "클레어", "줄리아", "레베카", "찬누리", "유리아", "아리솔", "온누리", "제니퍼", "이사벨", "메아리", "헤일리", "에리카", "나오미", "미카엘", "비비안", "유우키", "하예라", "이루다", "클라라", "메이슨", "루이스", "올리버", "새로이", "유이나", "마루한", "죠슈아", "안젤라", "은하수", "아일라", "하루키", "엘리엇", "이루리", "하루카", "에블린", "크리스", "아일린", "헤이든", "라파엘", "아이샤", "리브가", "예다움", "해오름", "케일라", "제레미"];
+
+
+    // '한 글자 이름 출력' 버튼 클릭 시 동작
+    document.getElementById("oneCharButton").addEventListener("click", function() {
+        // 무작위로 한 글자 선택
+        var randomIndex = Math.floor(Math.random() * OneCharList.length);
+        var randomChar = OneCharList[randomIndex];
+        
+        // 선택된 글자를 출력
+        document.getElementById("outputOneChar").innerText = "한 글자 이름 : " + randomChar;
+    });
+
+    // '두 글자 이름 출력' 버튼 클릭 시 동작
+    document.getElementById("twoCharButton").addEventListener("click", function() {
+        // 무작위로 한 글자 선택
+        var randomIndex1 = Math.floor(Math.random() * TwoCharList.length);
+        var randomChar1 = TwoCharList[randomIndex1];
+        
+        // 선택된 글자를 출력
+        document.getElementById("outputTwoChar").innerText = "두 글자 이름 : " + randomChar1;
+    });
+
+    // '세 글자 이름 출력' 버튼 클릭 시 동작
+    document.getElementById("threeCharButton").addEventListener("click", function() {
+        // 무작위로 한 글자 선택
+        var randomIndex2 = Math.floor(Math.random() * ThreeCharList.length);
+        var randomChar2 = ThreeCharList[randomIndex2];
+        
+        // 선택된 글자를 출력
+        document.getElementById("outputThreeChar").innerText = "세 글자 이름 : " + randomChar2;
+    });
+
+
+    // 영어 이름 리스트
+    var EnglishCharList = ["Olivia", "Emma", "Amelia", "Sophia", "Ava", "Charlotte", "Isabella", "Mia", "Luna", "Evelyn", "Lily", "Gianna", "Aurora", "Ellie", "Aria", "Harper", "Mila", "Sofia", "Layla", "Camila", "Eliana", "Nova", "Violet", "Hazel", "Willow", "Ella", "Chloe", "Scarlett", "Penelope", "Ivy", "Eleanor", "Avery", "Nora", "Elena", "Abigail", "Emily", "Isla", "Naomi", "Maya", "Delilah", "Elizabeth", "Grace", "Zoey", "Athena", "Emilia", "Paisley", "Kinsley", "Leilani", "Riley", "Zoe", "Madison", "Stella", "Victoria", "Iris", "Lucy", "Serenity", "Ayla", "Lainey", "Gabriella", "Aaliyah", "Addison", "Alice", "Everly", "Sadie", "Summer", "Bella", "Amara", "Hannah", "Autumn", "Madelyn", "Natalie", "Sophie", "Brooklyn", "Leah", "Valentina", "Emery", "Savannah", "Maria", "Jade", "Eden", "Josie", "Lyla", "Amira", "Aubrey", "Jasmine", "Skylar", "Clara", "Lillian", "Elliana", "Freya", "Sarah", "Ruby", "Adeline", "Nevaeh", "Rylee", "Liliana", "Audrey", "Cora", "Melody", "Hadley", "Noah", "Liam", "Oliver", "Elijah", "Mateo", "Lucas", "Levi", "Leo", "Ezra", "Luca", "Asher", "James", "Ethan", "Henry", "Sebastian", "Hudson", "Maverick", "Muhammad", "Benjamin", "Theo", "Jackson", "Kai", "Jack", "Aiden", "Michael", "Grayson", "Daniel", "Josiah", "Gabriel", "Mason", "Alexander", "Elias", "Julian", "Luke", "Jayden", "Logan", "Owen", "David", "Theodore", "Wyatt", "Carter", "Ezekiel", "Samuel", "William", "Waylon", "Miles", "Matthew", "Isaiah", "Santiago", "Joseph", "Caleb", "Adam", "Jacob", "Thomas", "Isaac", "John", "Zion", "Nathan", "Amir", "Eli", "Adrian", "Lincoln", "Nolan", "Anthony", "Jeremiah", "Rowan", "Micah", "Enzo", "Cooper", "Roman", "Ryan", "Xavier", "Cameron", "Wesley", "Jaxon", "Weston", "Joshua", "Colton", "Silas", "Charlie", "Andrew", "Christopher", "Parker", "Christian", "Greyson", "Atlas", "Austin", "Myles", "Walker", "Jasper", "Jordan", "Matteo", "Bennett", "Kayden", "Landon", "Luka", "Amari", "Dominic", "Aaron", "Axel"];
+
+    // '영어 이름 출력' 버튼 클릭 시 동작
+    document.getElementById("englishNameButton").addEventListener("click", function() {
+        // 무작위로 한 글자 선택
+        var randomIndex3 = Math.floor(Math.random() * EnglishCharList.length);
+        var randomChar3 = EnglishCharList[randomIndex3];
+        
+        // 선택된 글자를 출력
+        document.getElementById("outputEngChar").innerText = "영어 이름 : " + randomChar3;
+    });
+</script>
+</html>
